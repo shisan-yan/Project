@@ -1,13 +1,10 @@
-from django.shortcuts import render
-from django.views import View
 from django.http import HttpResponse
-# Create your views here.
-
+from django.views import View
+from django.shortcuts import render
 
 class Index(View):
-    """首页视图"""
 
+    """首页"""
     def get(self, request, *args, **kwargs):
-        # return HttpResponse('你现在已经进入到首页来了！')
-
+        title = "运维管理-首页"
 

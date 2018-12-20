@@ -25,18 +25,23 @@ SECRET_KEY = 'x5cdt6n&#gvoi9n@86%gc#3$_+hxz^=k8=w+#4p56kyg8##ub^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.11.230']
+ALLOWED_HOSTS = ['192.168.20.52','172.16.78.132']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'DevOps',
+    'app_auth',
+    'boards',
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +59,7 @@ ROOT_URLCONF = 'TheOne.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,7 +81,10 @@ WSGI_APPLICATION = 'TheOne.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': ''
+        'NAME': 'devops',
+        'USER':'root',
+        'HOST':'172.16.78.132',
+        'PASSWORD':'Root@123'
     }
 }
 
@@ -118,3 +126,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]

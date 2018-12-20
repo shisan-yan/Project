@@ -1,5 +1,5 @@
 from django.contrib import admin
-from DevOps import models
-
+from .models import Board
 # Register your models here.
-admin.site.register(models.User)
+
+admin.site.register(Board)
