@@ -1,0 +1,21 @@
+{% load static %}<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %} DevOps{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    </head>
+
+    <body>
+        {% block body %}
+        <div class="container">
+            <ol class="breadcurmb my-4">
+                {% block breadcrumb %}
+                {% endblock %}
+            </ol>
+            {% block content %}
+            {% endblock %}
+        </div>
+    {% endblock body %}
+    </body>
+</html>
