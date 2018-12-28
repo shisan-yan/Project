@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['192.168.11.231', '192.168.11.148']
 
 INSTALLED_APPS = [
     'auth_user',
+    'code_mage',
     'widget_tweaks',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -126,3 +127,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+#配置登陆成功后，跳转到的页面
+LOGIN_REDIRECT_URL = '/auth_user/'

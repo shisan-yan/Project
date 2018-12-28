@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse, request
 from django.views import  View
-from django.contrib.auth.models import User
 from .forms import SignUpForm
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate
+
 
 # Create your views here.
 
@@ -11,16 +11,15 @@ from django.contrib.auth.forms import UserCreationForm
 class Index(View):
 
     def get(self, request):
-        return HttpResponse('这就已经进入到首页了！')
+        return render(request, 'index.html')
 
+class register(View):
 
-class login(View):
-
-    #请求方法，也就是登陆页面的视图方法
+    #登陆请求方法，也就是登陆页面的视图方法
     def get(self, request):
 
         form = SignUpForm()
-        return render(request, 'login.html', {'form': form})
+        return render(request, 'register.html', {'form': form})
 
     def post(self, request):
 
@@ -32,4 +31,25 @@ class login(View):
             return render('success.html')
             # return redirect('/auth_user/')
         else:
+            return render(request, 'register.html', {'form': form})
+
+class login(View):
+    #登陆请求方法，也就是登陆页面
+    def get(self, request):
+        form = SignUpForm()
+        return render(request, 'login.html', {'form': form})
+
+    def post(self, request):
+
+        usernameIn = request.POST['username']
+        passwordIn = request.POST['password']
+        user = authenticate(username=usernameIn, password=passwordIn)
+
+        if user is not None:
+            pass
+        else:
             return render(request, 'login.html', {'form': form})
+
+class Welcome(View):
+    def get(self, request):
+        return render(request, 'welcome.html')
