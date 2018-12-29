@@ -3,7 +3,7 @@
   
   <head>
     <meta charset="UTF-8">
-    <title>欢迎页面-X-admin2.0</title>
+    <title>Title</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -22,7 +22,8 @@
   
   <body>
     <div class="x-body layui-anim layui-anim-up">
-        <form class="layui-form">
+        <form class="layui-form" >
+            {% csrf_token %}
             <div class="layui-form-item">
               <label for="L_username" class="layui-form-label">
                   <span class="x-red">*</span>用户名
@@ -35,6 +36,19 @@
                   <span class="x-red">*</span>Git账号用户名
               </div>
           </div>
+            <div class="layui-form-item">
+              <label for="L_name" class="layui-form-label">
+                  <span class="x-red">*</span>显示名
+              </label>
+              <div class="layui-input-inline">
+                  <input type="text" id="L_name" name="name" required="" lay-verify="name"
+                  autocomplete="off" class="layui-input">
+              </div>
+                <div class="layui-form-mid layui-word-aux">
+                  <span class="x-red">*</span>用于显示的中文名
+              </div>
+          </div>
+
           <div class="layui-form-item">
               <label for="L_email" class="layui-form-label">
                   <span class="x-red">*</span>邮箱
@@ -102,21 +116,30 @@
 
           //监听提交
           form.on('submit(add)', function(data){
-            // console.log(data);
-              $.post("{U('/user/UserAdd/')}", data.field, function (res) {
-                  if(res.status) {
-                    layer.alert("增加成功", {icon: 6},function () {
-                                    // 获得frame索引
-                                    var index = parent.layer.getFrameIndex(window.name);
-                                    //关闭当前frame
-                                    parent.layer.close(index);
-                                });
-                  }else {
-                        return false;
-                  }
-              })
+              var json_data=(data.field)
+            $.ajax({
+                url:'/code/UserAdd/',
+                type:'POST',
+                dataType:'JSON',
+                data:json_data,
+                success:function (data) {
+                    if (data.code == '200') {
+                        layer.alert("增加成功", {icon: 6},function () {
+                        // 获得frame索引
+                        var index = parent.layer.getFrameIndex(window.name);
+                        //关闭当前frame
+                        parent.layer.close(index);
+                        });
+                    }else {
+                        layer.alert(data.message);
+                    }
+                },
+                error:function (res) {
+                    consol.log(res);
+                },
 
-
+            });
+              return false;
           });
           
           
