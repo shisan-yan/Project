@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
   
   <head>
     <meta charset="UTF-8">
@@ -84,6 +84,18 @@
                   autocomplete="off" class="layui-input">
               </div>
           </div>
+            <div class="layui-form-item">
+              <label  class="layui-form-label">
+                  <span class="x-red">*</span>所属项目
+              </label>
+              <div class="layui-input-block">
+              {% for pro in project %}
+                       <input  type="checkbox"  name="project" id="{{ pro.id }}" value="{{ pro.id }}"> {{ pro.name }}
+
+              {% endfor %}
+              </div>
+          </div>
+
           <div class="layui-form-item">
               <label for="L_repass" class="layui-form-label">
               </label>
@@ -141,7 +153,7 @@
             });
               return false;
           });
-          
+
           
         });
     </script>

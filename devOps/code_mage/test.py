@@ -1,17 +1,20 @@
 import gitlab
+
+"""
 gl = gitlab.Gitlab.from_config('gitServer', ['/etc/python-gitlab.cfg'])
+# proInfo = gl.projects.get(4)
+proRes = gl.users.list(username='yangjia')[0].id
+# proRes = proInfo.members.create({'user_id': 2, 'access_level': gitlab.DEVELOPER_ACCESS})
 
-userInfo = {
-    'email': '253341888@qq.com',
-    'username': 'wangyang',
-    'password': '12345678',
-    'name': '汪洋',
-}
-
-try:
-    user = gl.users.create(userInfo)
-except Exception as e:
-    print(e)
+print(proRes)
 
 
 
+"""
+a = '100'
+if a > '1000':
+    print('haha')
+else if a > '100':
+    print('hehe')
+else:
+    print('heihei')

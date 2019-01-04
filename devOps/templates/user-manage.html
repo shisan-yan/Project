@@ -55,41 +55,39 @@
             <th>用户组</th>
             <th>最近一次发布时间</th>
             <th>发布版本数量</th>
-            <th>文件预览</th>
-            <th>发布状态</th>
-            <th>发布</th>
-            <th>测试环境</th>
-            <th>正式环境</th></tr>
+{#            <th>用户权限</th>#}
+{#            <th>测试环境</th>#}
+            <th>管理操作</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
-            </td>
-            <td>1</td>
-            <td>小明</td>
-            <td>男</td>
-            <td>13000000000</td>
-            <td>admin@mail.com</td>
-            <td>北京市 海淀区</td>
-            <td>2017-01-01 11:11:42</td>
-            <td class="td-status">
-              <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span></td>
-            <td class="td-manage">
-              <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
-                <i class="layui-icon">&#xe601;</i>
-              </a>
-              <a title="编辑"  onclick="x_admin_show('编辑','member-edit.html',600,400)" href="javascript:;">
-                <i class="layui-icon">&#xe642;</i>
-              </a>
-              <a onclick="x_admin_show('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">
-                <i class="layui-icon">&#xe631;</i>
-              </a>
-              <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                <i class="layui-icon">&#xe640;</i>
-              </a>
-            </td>
-          </tr>
+          {% for user in userList %}
+              <tr>
+                  <td>
+                      <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+                  </td>
+                  <td>{{ user.name }}</td>
+                  <td>开发者</td>
+                  <td>{{ user.created_at }}</td>
+                  <td>10000</td>
+{#            <td>2017-01-01 11:11:42</td>#}
+{#            <td class="td-status">#}
+{#              <span class="layui-btn layui-btn-normal layui-btn-mini">已启用</span></td>#}
+                  <td class="td-manage">
+                    <a onclick="member_stop(this,{{ user.id }})" href="javascript:;"  title="启用">
+                        <i class="layui-icon">&#xe601;</i>
+                    </a>
+                      <a title="编辑"  onclick="x_admin_show('编辑','member-edit.html',600,400)" href="javascript:;">
+                        <i class="layui-icon">&#xe642;</i>
+                      </a>
+                    <a onclick="x_admin_show('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">
+                        <i class="layui-icon">&#xe631;</i>
+                    </a>
+                    <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
+                        <i class="layui-icon">&#xe640;</i>
+                    </a>
+                </td>
+              </tr>
+          {% endfor %}
         </tbody>
       </table>
       <div class="page">
@@ -102,7 +100,6 @@
           <a class="next" href="">&gt;&gt;</a>
         </div>
       </div>
-
     </div>
     <script>
       layui.use('laydate', function(){
@@ -122,24 +119,37 @@
        /*用户-停用*/
       function member_stop(obj,id){
           layer.confirm('确认要停用吗？',function(index){
-
               if($(obj).attr('title')=='启用'){
-
-                //发异步把用户状态进行更改
-                $(obj).attr('title','停用')
-                $(obj).find('i').html('&#xe62f;');
-
-                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
-                layer.msg('已停用!',{icon: 5,time:1000});
-
-              }else{
-                $(obj).attr('title','启用')
-                $(obj).find('i').html('&#xe601;');
-
-                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
-                layer.msg('已启用!',{icon: 5,time:1000});
+                    var status = 'enable';
+              }else {
+                    var status = 'disable';
               }
-              
+              var token = "{{ csrf_token }}";
+              $.ajax({
+                url:'/code/UserStatus/',
+                type:'POST',
+                dataType:'JSON',
+                data:{'id':id, 'flg':status, 'csrfmiddlewaretoken':token},
+                success:function (data) {
+                    console.log(data);
+                    return false;
+                    if (data.code == '200') {
+                        layer.alert("增加成功", {icon: 6},function () {
+                        // 获得frame索引
+                        var index = parent.layer.getFrameIndex(window.name);
+                        //关闭当前frame
+                        parent.layer.close(index);
+                        });
+                    }else {
+                        layer.alert(data.message);
+                    }
+                },
+                error:function (res) {
+                    console.log(res);
+                },
+
+            });
+
           });
       }
 
